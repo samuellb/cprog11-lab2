@@ -1,12 +1,15 @@
 
-OBJECTS = Date.o
+OBJECTS = date.o
 
-CFLAGS += -Wall -Wextra -O2
+CFLAGS += -Wall -Wextra -Weffc++ -O2
 
 all:
 
+.cpp.o:
+	$(CXX) $(CFLAGS) -c $< -o $@
+
 # Header dependencies
-Date.o: Date.h
+date.o: date.h
 
 
 .PHONY: clean
