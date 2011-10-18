@@ -2,6 +2,7 @@
 #define DATE_H
 
 #include <string>
+#include <iostream>
 
 namespace lab2 {
 
@@ -39,6 +40,8 @@ class Date {
     inline int operator-(const Date & other) const { return date - other.date; }
     
     inline int mod_julian_day() const { return date; }
+    
+    friend std::ostream & operator<<(std::ostream & os, const Date &);
     
     virtual ~Date() = 0;
     

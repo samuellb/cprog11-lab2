@@ -1,5 +1,6 @@
 
 #include "date.h"
+#include <iostream>
 
 namespace lab2 {
     
@@ -19,8 +20,12 @@ namespace lab2 {
         return !(*this < other);
     }
     */
-    
+    std::ostream & operator<<(std::ostream & os, const Date & date) {
+        os << date.year() << "-" << date.month() << "-" << date.days_this_month();
+        return os;
+    }
     
 }
+
 
 
