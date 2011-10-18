@@ -10,6 +10,7 @@ all:
 
 # Header dependencies
 date.o: date.h
+western_date.o: date.h western_date.h
 
 
 .PHONY: clean
