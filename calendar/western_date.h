@@ -8,7 +8,9 @@ namespace lab2 {
 class WesternDate : public Date {
     
   public:
-    
+    WesternDate();
+    WesternDate(int, int, int);
+    WesternDate(const Date &);
     virtual int week_day() const;
     virtual int days_per_week() const;
     virtual int days_this_month() const;
