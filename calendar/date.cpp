@@ -22,11 +22,10 @@ namespace lab2 {
     }
     */
     std::ostream & operator<<(std::ostream & os, const Date & date) {
-        // TODO: days_this_month() > day()
         os << date.year() << "-";
         os << std::setfill('0') << std::setw(2) << date.month();
         os << std::resetiosflags(std::ios::left);
-        os << "-" << std::setfill('0') << std::setw(2) << date.days_this_month();
+        os << "-" << std::setfill('0') << std::setw(2) << date.day();
         return os;
     }
     
