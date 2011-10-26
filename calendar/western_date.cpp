@@ -1,12 +1,9 @@
-
 #include "western_date.h"
 
 namespace lab2 {
 
-
 int WesternDate::week_day() const {
-    // TODO fix
-    return (mod_julian_day() + 42) % 7;
+    return (mod_julian_day() + 1) % 7;
 }
 
 int WesternDate::days_per_week() const {
