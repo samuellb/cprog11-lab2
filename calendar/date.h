@@ -40,17 +40,17 @@ class Date {
     
     inline int operator-(const Date & other) const { return date - other.date; }
     
-    inline int mod_julian_day() const { return date; }
+    inline int mod_julian_day() const { return date - 2400000; }
     
     friend std::ostream & operator<<(std::ostream & os, const Date &);
     
     virtual ~Date() = 0;
     
-  private:
+  protected:
     
     /**
-     * Internal representation of a date, in days since the "modified julian
-     * day", which is november 17th, 1858.
+     * Internal representation of a date, in days since the "julian day", which
+     * is January 1st, 4713 BC.
      */
     int date;
     

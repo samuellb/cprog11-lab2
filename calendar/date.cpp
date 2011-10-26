@@ -4,23 +4,7 @@
 #include <iomanip>
 
 namespace lab2 {
-    
-    /*bool Date::operator!=(const Date & other) const {
-        return !(*this == other);
-    }
-    
-    bool operator<=(const Date & other) const {
-        return !(other < *this);
-    }
-    
-    bool operator>(const Date &) const {
-        return !(*this <= other);
-    }
-    
-    bool operator>=(const Date &) const {
-        return !(*this < other);
-    }
-    */
+
     std::ostream & operator<<(std::ostream & os, const Date & date) {
         os << date.year() << "-";
         os << std::setfill('0') << std::setw(2) << date.month();
