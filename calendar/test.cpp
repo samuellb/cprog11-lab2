@@ -2,6 +2,7 @@
 #include "julian.h"
 #include "kattistime.h"
 #include <iostream>
+#include <stdexcept>
 #include <ctime>
 
 int main() {
@@ -40,9 +41,16 @@ int main() {
     lab2::Gregorian good(2004, 2, 29);
     std::cout << "created 2004-02-29: " << good << std::endl;
 
-    lab2::Gregorian bad(2003, 2, 29);
-    std::cout << "created 2003-02-29 (wrong!): " << bad << std::endl;
+    try {
+        lab2::Gregorian bad(2003, 2, 29);
+        std::cout << "created 2003-02-29 (wrong!): " << bad << std::endl;
+    } catch (std::out_of_range) {
+        std::cout << "caught exception from invalid date" << std::endl;
+    }
 
+    /* Test a large date */
+    lab2::Gregorian future(2560, 10, 2);
+    std::cout << "   Gregorian(2560, 10, 2) :  " << future << std::endl;
 
     return 0;
 }
