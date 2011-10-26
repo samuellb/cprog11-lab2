@@ -14,6 +14,29 @@ template <class T> class Calendar {
   public:
 
     Calendar() : date(), events() { }
+    
+    template<typename U> Calendar(const Calendar<U> & cal) :
+        date(cal.date),
+        events() {
+        
+        typename std::multimap<U, std::string>::const_iterator it;
+        for (it = cal.events.begin(); it != cal.events.end(); it++) {
+            events.insert(std::pair<T, std::string>(it->first, it->second));
+        }
+    }
+    
+    template<typename U> Calendar & operator=(const Calendar<U> & cal) {
+        
+        date = cal.date;
+        events.clear();
+        
+        typename std::multimap<U, std::string>::const_iterator it;
+        for (it = cal.events.begin(); it != cal.events.end(); it++) {
+            events.insert(std::pair<T, std::string>(it->first, it->second));
+        }
+        
+        return *this;
+    }
 
     bool set_date(int year, int month, int day) {
         try {
@@ -94,7 +117,7 @@ template <class T> class Calendar {
         return os;
     }
 
-  private:
+//  private:
     T date;
     std::multimap<T, std::string> events;
 };
