@@ -14,6 +14,8 @@ western_date.o: date.h western_date.h
 gregorian.o: date.h western_date.h gregorian.h
 julian.o: date.h western_date.h julian.h
 test.o: date.h western_date.h gregorian.h julian.h
+calendar.o: date.h calendar.h
+calendar_test.o: date.h calendar.h
 
 
 test: $(OBJECTS) test.o
@@ -21,6 +23,10 @@ test: $(OBJECTS) test.o
 
 datetest: $(OBJECTS) datetest.o
 	$(CXX) $(CFLAGS) $(OBJECTS) datetest.o -o datetest
+
+calendar_test: $(OBJECTS) calendar_test.o
+	$(CXX) $(CFLAGS) $(OBJECTS) calendar_test.o -o calendar_test
+
 
 
 .PHONY: clean
