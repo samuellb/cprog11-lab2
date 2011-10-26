@@ -1,5 +1,5 @@
 
-OBJECTS = date.o western_date.o gregorian.o julian.o kattistime.o cprog09lab23.cpp
+OBJECTS = date.o western_date.o gregorian.o julian.o kattistime.o
 
 CFLAGS += -Wall -Wextra -Weffc++ -O2
 
