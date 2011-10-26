@@ -1,5 +1,5 @@
 
-OBJECTS = date.o western_date.o gregorian.o kattistime.o
+OBJECTS = date.o western_date.o gregorian.o julian.o kattistime.o
 
 CFLAGS += -Wall -Wextra -Weffc++ -O2
 
@@ -12,7 +12,8 @@ all:
 date.o: date.h kattistime.h
 western_date.o: date.h western_date.h
 gregorian.o: date.h western_date.h gregorian.h
-test.o: date.h western_date.h gregorian.h
+julian.o: date.h western_date.h julian.h
+test.o: date.h western_date.h gregorian.h julian.h
 
 
 test: $(OBJECTS) test.o

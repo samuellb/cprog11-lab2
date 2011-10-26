@@ -10,7 +10,7 @@ class Gregorian : public WesternDate {
   public:    
     Gregorian();
     Gregorian(int, int, int);
-    Gregorian(const Date & d);
+    Gregorian(const Date &);
 
     using Date::operator++;
     using Date::operator--;

@@ -1,4 +1,5 @@
 #include "gregorian.h"
+#include "julian.h"
 #include "kattistime.h"
 #include <iostream>
 #include <ctime>
@@ -10,6 +11,10 @@ int main() {
     lab2::Gregorian g;
     std::cout << g << std::endl;
     std::cout << g.week_day_name() << std::endl;
+
+    lab2::Julian j;
+    std::cout << j << std::endl;
+    std::cout << j.week_day_name() << std::endl;
     
     g.add_year(4);
     std::cout << g << std::endl;
