@@ -112,7 +112,7 @@ template <class T> class Calendar {
         typename std::multimap<T, std::string>::const_iterator it;
         for (it = calendar.events.begin(); it != calendar.events.end(); it++)
             if ((*it).first >= calendar.date)
-                os << (*it).first << " => " << (*it).second << std::endl;
+                os << (*it).first << " : " << (*it).second << std::endl;
 
         return os;
     }
