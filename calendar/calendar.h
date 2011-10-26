@@ -111,7 +111,7 @@ template <class T> class Calendar {
     friend std::ostream & operator<<(std::ostream & os, const Calendar<T> & calendar) {
         typename std::multimap<T, std::string>::const_iterator it;
         for (it = calendar.events.begin(); it != calendar.events.end(); it++)
-            if ((*it).first >= calendar.date)
+            if ((*it).first > calendar.date)
                 os << (*it).first << " : " << (*it).second << std::endl;
 
         return os;
