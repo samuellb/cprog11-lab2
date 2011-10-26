@@ -20,6 +20,13 @@ Date::Date(int d) :
     calc_month(0),
     calc_day(0) { }
 
+Date::Date(const Date & d) :
+    date(d.date),
+    calculated_date(d.calculated_date),
+    calc_year(d.calc_year),
+    calc_month(d.calc_month),
+    calc_day(d.calc_day) { }
+
 void Date::add_year(int year) {
     calc();
     set_date(calc_year + year, calc_month, calc_day);

@@ -12,7 +12,7 @@ class Date {
 
     Date();
     Date(int d);
-    //Date(const Date &); 
+    Date(const Date &);
     
     inline int year() const { calc(); return calc_year; }
     inline int month() const { calc(); return calc_month; }
