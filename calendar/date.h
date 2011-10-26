@@ -43,7 +43,7 @@ class Date {
     
     inline int operator-(const Date & other) const { return date - other.date; }
     
-    inline int mod_julian_day() const { return date - 2400000; }
+    inline int mod_julian_day() const { return date - 2400001; }
     
     friend std::ostream & operator<<(std::ostream & os, const Date &);
     

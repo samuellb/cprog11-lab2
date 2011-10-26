@@ -17,6 +17,10 @@ class WesternDate : public Date {
     virtual int months_per_year() const;
     virtual const std::string & week_day_name() const;
     virtual const std::string & month_name() const;
+
+  protected:
+    virtual bool leap_year(int year) const = 0;
+    bool leap_year() const;
 };
 
 }

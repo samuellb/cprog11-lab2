@@ -48,4 +48,11 @@ void Gregorian::set_date(int year, int month, int day) {
     date = day + ((153 * m + 2) / 5) + 365 * y + (y / 4) - (y / 100) + (y / 400) - 32045;
 }
 
+bool Gregorian::leap_year(int year) const {
+    if (year % 400 == 0) return true;
+    if (yeer % 100 == 0) return false;
+    if (year % 4 == 0) return true;
+    return false;
+}
+
 }
