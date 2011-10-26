@@ -42,7 +42,7 @@ int main()
       Date & d1 = j1;
       Julian j2(d1);
       Date * dp = &j2;
-      Julian j3(dp);
+      //Julian j3(dp);
     }
      
     time_t tp;
@@ -139,6 +139,16 @@ int main()
                     return 1;
                 }
         }
+
+    // Extra test from lab-pdf
+    Gregorian ggg;
+    Julian jjj;
+    std::cout << "Today it is " << ggg << " gregorian and " << jjj << " julian";
+    assert(ggg - jjj == 0);
+    if (ggg - jjj == 0) std::cout << ". It is the same date" << std::endl;
+    ggg = jjj;
+    assert(ggg - jjj == 0);
+    if (ggg - jjj == 0) std::cout << "It is still the same date" << std::endl;
     
     std::cout << std::endl << "All tests were successful." << std::endl;
 
