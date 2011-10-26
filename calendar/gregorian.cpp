@@ -5,6 +5,9 @@
 
 namespace lab2 {
 
+
+Gregorian::Gregorian() : WesternDate() { }
+
 Gregorian::Gregorian(int year, int month, int day) {
     set_date(year, month, day);
     // Check that the date is correct
@@ -13,7 +16,8 @@ Gregorian::Gregorian(int year, int month, int day) {
         throw std::out_of_range("Invalid date");
 }
 
-//Gregorian::Gregorian(const Date & date) : WesternDate(date) {}
+Gregorian::Gregorian(const Date & d) : WesternDate(d) { }
+
 
 void Gregorian::calc() const {
     if (date == calculated_date)

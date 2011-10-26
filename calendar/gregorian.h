@@ -8,9 +8,9 @@ namespace lab2 {
 class Gregorian : public WesternDate {
     
   public:    
-    Gregorian() : WesternDate() { }
+    Gregorian();
     Gregorian(int, int, int);
-    Gregorian(const Date & d) : WesternDate(d) { }
+    Gregorian(const Date & d);
 
     using Date::operator++;
     using Date::operator--;

@@ -2,6 +2,10 @@
 
 namespace lab2 {
 
+WesternDate::WesternDate() : Date() { }
+WesternDate::WesternDate(const Date & d) : Date(d) { }
+
+
 int WesternDate::week_day() const {
     return (mod_julian_day() + 1) % 7;
 }
