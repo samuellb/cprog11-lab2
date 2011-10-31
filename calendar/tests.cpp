@@ -4,16 +4,21 @@
 #include "date.h"
 #include "julian.h"
 #include "gregorian.h"
+#include "kattistime.h"
 
 class DateTestSuite : public CxxTest::TestSuite 
 {
 public:
-
+    
+    DateTestSuite() {
+        set_k_time(1320062115); // 2011-10-31
+    }
+    
     // Testcase 1
 
     // Tests the year/month/day getters.
 
-    void test_1_getters(void)
+    void test_1_getters()
     {
         static const int dates[][3] = {
             { 2000, 1, 1 },
