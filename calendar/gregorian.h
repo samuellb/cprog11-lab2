@@ -28,6 +28,8 @@ class Gregorian : public WesternDate {
 
     virtual void calc() const;
     virtual void set_date(int, int, int);
+    
+    virtual bool leap_year(int year) const;
 };
 
 }

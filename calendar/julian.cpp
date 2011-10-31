@@ -64,7 +64,7 @@ void Julian::set_date(int year, int month, int day) {
     date = 367L * year - 7 * (year + 5001L + (month - 9) / 7) / 4 + 275 * month / 9 + day + 1729777L;
 }
 
-bool leap_year(int year) const {
+bool Julian::leap_year(int year) const {
     return (year % 4) == 0;
 }
 

@@ -50,7 +50,7 @@ void Gregorian::set_date(int year, int month, int day) {
 
 bool Gregorian::leap_year(int year) const {
     if (year % 400 == 0) return true;
-    if (yeer % 100 == 0) return false;
+    if (year % 100 == 0) return false;
     if (year % 4 == 0) return true;
     return false;
 }
