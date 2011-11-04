@@ -35,5 +35,13 @@ int main() {
     std::cout << "----------------------------------------" << std::endl;
     std::cout << cal;
 
+    std::cout << "----------------------------------------" << std::endl;
+    lab2::Calendar<lab2::Gregorian> calendar;
+    calendar.set_date(2007, 12, 2);
+    calendar.set_format(lab2::Calendar<lab2::Gregorian>::cal);
+    calendar.add_event("Julafton", 24, 12, 2007);
+    calendar.add_event("Min andra cykel", 20, 12, 2007);
+    std::cout << calendar;
+
     return 0;
 }
