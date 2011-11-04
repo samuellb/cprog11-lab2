@@ -18,8 +18,8 @@ Gregorian::Gregorian(const Date & d) : WesternDate(d) { }
 
 
 void Gregorian::calc() const {
-    if (date == calculated_date)
-        return;
+    /*if (calculated_date != -1 && date == calculated_date)
+        return;*/
 
     int j = date + 32044;
     int g = j / 146097;

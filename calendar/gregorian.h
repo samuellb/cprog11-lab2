@@ -12,8 +12,8 @@ class Gregorian : public WesternDate {
     Gregorian(int, int, int);
     Gregorian(const Date &);
 
-    using Date::operator++;
-    using Date::operator--;
+    /*using Date::operator++;
+    using Date::operator--;*/
 
     inline Gregorian operator++(int) { 
         Gregorian d = *this; 

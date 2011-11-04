@@ -30,8 +30,8 @@ class Date {
     inline Date & operator+=(const int & days) { date += days; return *this; }
     inline Date & operator-=(const int & days) { date -= days; return *this; }
 
-    void add_year(int = 1);
-    void add_month(int = 1);
+    virtual void add_year(int = 1) = 0;
+    virtual void add_month(int = 1) = 0;
     
     inline bool operator==(const Date & other) const  { return date == other.date; }
     inline bool operator!=(const Date & other) const  { return date != other.date; }

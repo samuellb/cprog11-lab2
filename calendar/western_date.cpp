@@ -1,5 +1,7 @@
 #include "western_date.h"
 
+#include <cstdlib>
+
 namespace lab2 {
 
 WesternDate::WesternDate() : Date() { }
@@ -14,10 +16,14 @@ int WesternDate::days_per_week() const {
     return 7;
 }
 
-int WesternDate::days_this_month() const {
+int WesternDate::days_that_month(int year, int month) const {
     static const int days_per_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if (month() == 2 && leap_year()) return 29;
-    else return days_per_month[month() - 1];
+    if (month == 2 && leap_year(year)) return 29;
+    else return days_per_month[month - 1];
+}
+
+int WesternDate::days_this_month() const {
+    return days_that_month(year(), month());
 }
 
 int WesternDate::months_per_year() const {
@@ -40,6 +46,44 @@ const std::string & WesternDate::month_name() const {
 
 bool WesternDate::leap_year() const {
     return leap_year(year());
+}
+
+
+void WesternDate::add_year(int year) {
+    calc();
+    int y = calc_year + year;
+    int m = calc_month;
+    int d = calc_day;
+    
+    if (!leap_year(y) && m == 2 && d == 29) d = 28;
+
+    set_date(y, m, d);
+}
+
+void WesternDate::add_month(int month) {
+    int abs_month = std::abs(month);
+    int step = (month < 0 ? -1 : 1);
+    for (int i = 0; i < abs_month; ++i) {
+        calc();
+        int y = calc_year;
+        int m = calc_month;
+        int d = calc_day;
+        
+        m += step;
+
+        // Fix the date
+        if (m <= 0) { y--; m = months_per_year(); }
+        if (m > months_per_year()) { y++; m = 1; }
+        
+        // Check the day
+        if (d > days_that_month(y, m)) {
+            // Add/subtract 30 days
+            *this += 30*step;
+        } else {
+            // Add one month
+            set_date(y, m, d);
+        }
+    }
 }
 
 

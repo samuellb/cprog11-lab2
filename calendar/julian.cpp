@@ -22,8 +22,8 @@ Julian::Julian(const Date & d) : WesternDate(d) { }
  * @link http://www8.cs.umu.se/~isak/Snippets/jdn.c
  */
 void Julian::calc() const {
-    if (date == calculated_date)
-        return;
+    /*if (calculated_date != -1 && date == calculated_date)
+        return;*/
 
     long x, z, m, d, y;
     x = date + 68569L;
