@@ -86,5 +86,13 @@ void WesternDate::add_month(int month) {
     }
 }
 
+bool WesternDate::valid_date(int year, int month, int day) const {
+    if (year < -4000 || year > 3000) return false; // Tested date range
+    if (month <= 0 || month > months_per_year()) return false;
+    if (day <= 0 || day > days_that_month(year, month)) return false;
+    return true;
+}
+
 
 }
+

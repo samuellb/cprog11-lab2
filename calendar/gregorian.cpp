@@ -9,8 +9,7 @@ Gregorian::Gregorian() : WesternDate() { }
 Gregorian::Gregorian(int year, int month, int day) {
     set_date(year, month, day);
     // Check that the date is correct
-    calc();
-    if (year != calc_year || month != calc_month || day != calc_day)
+    if (!valid_date(year, month, day))
         throw std::out_of_range("Invalid date");
 }
 

@@ -25,6 +25,7 @@ class WesternDate : public Date {
     virtual bool leap_year(int) const = 0;
     int days_that_month(int year, int month) const;
     bool leap_year() const;
+    bool valid_date(int year, int month, int day) const;
 };
 
 }
