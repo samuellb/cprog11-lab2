@@ -41,6 +41,7 @@ int main() {
     calendar.set_format(lab2::Calendar<lab2::Gregorian>::cal);
     calendar.add_event("Julafton", 24, 12, 2007);
     calendar.add_event("Min andra cykel", 20, 12, 2007);
+    calendar.move_event(lab2::Gregorian(2007, 12, 24), lab2::Gregorian(2007, 12, 25), "Julafton");
     std::cout << calendar;
 
     return 0;

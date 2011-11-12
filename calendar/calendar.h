@@ -113,6 +113,11 @@ template <class T> class Calendar {
         }
     }
 
+    bool move_event(const Date & from, const Date & to, std::string event) {
+        return (remove_event(event, from.day(), from.month(), from.year()) &&
+                add_event(event, to.day(), to.month(), to.year()));
+    }
+
     void set_format(format outformat) {
         this->outformat = outformat;
     }
