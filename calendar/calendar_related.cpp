@@ -59,5 +59,8 @@ int main() {
     
     std::cout << cal;
 
+    cal.set_format(lab2::Calendar<lab2::Gregorian>::icalendar);
+    std::cout << cal;
+
     return 0;
 }
