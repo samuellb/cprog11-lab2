@@ -214,7 +214,7 @@ template <class T> class Calendar {
                 if (moved_parent) {
                     main.related_by.first = new_parent_date;
                 }
-                                
+                
                 // Move this event
                 Event main_copy = main;
                 events.erase(it);
@@ -289,7 +289,7 @@ template <class T> class Calendar {
         os << std::endl << std::endl;
 
         for (auto it = events.begin(); it != events.end(); ++it) {
-            os << (*it).first << " : " << (*it).second.name << std::endl;
+            os << it->first << " : " << it->second.name << std::endl;
         }
         os << std::endl;
 
@@ -298,8 +298,8 @@ template <class T> class Calendar {
 
     std::ostream & format_list(std::ostream & os) const {
         for (auto it = events.begin(); it != events.end(); ++it) {
-            if ((*it).first > date) {
-                os << (*it).first << " : " << (*it).second.name << std::endl;
+            if (it->first > date) {
+                os << it->first << " : " << it->second.name << std::endl;
             }
         }
 
@@ -312,9 +312,9 @@ template <class T> class Calendar {
         os << "PRODID:saker" << std::endl;
         for (auto it = events.begin(); it != events.end(); ++it) {
             os << "BEGIN:VEVENT" << std::endl;
-            os << "DTSTART:" << (*it).first.year() << (*it).first.month() << (*it).first.day() << "T080000" << std::endl;
-            os << "DTEND:" << (*it).first.year() << (*it).first.month() << (*it).first.day() << "T090000" << std::endl;
-            os << "SUMMARY:" << (*it).second.name << std::endl;
+            os << "DTSTART:" << it->first.year() << it->first.month() << it->first.day() << "T080000" << std::endl;
+            os << "DTEND:" << it->first.year() << it->first.month() << it->first.day() << "T090000" << std::endl;
+            os << "SUMMARY:" << it->second.name << std::endl;
             os << "END:VEVENT" << std::endl;
         }
         os << "END:VCALENDAR" << std::endl;
