@@ -253,7 +253,37 @@ template <class T> class Calendar {
         return false;
         
     }
-
+    
+    bool add_yearly_event(const Date & date, int num_recur, std::string name) {        
+        // First one
+        if (!add_event(Event(date, name))) return false;
+        
+        T d(date);
+        bool ok = true;
+        for (int i = 0; i < num_recur; ++i) {
+            d.add_year(1);
+            if (!add_related_event(date, d - date, name, name))
+                ok = false;
+        }
+        
+        return ok;
+    }
+    
+    bool add_weekly_event(const Date & date, int num_recur, std::string name) {        
+        // First one
+        if (!add_event(Event(date, name))) return false;
+        
+        T d(date);
+        bool ok = true;
+        for (int i = 0; i < num_recur; ++i) {
+            d += d.days_per_week();
+            if (!add_related_event(date, d - date, name, name))
+                ok = false;
+        }
+        
+        return ok;
+    }
+    
     void set_format(format outformat) {
         this->outformat = outformat;
     }

@@ -42,6 +42,14 @@ int main() {
     std::cout << cal;
     
     std::cout << "----------------------------------------" << std::endl;
+    
+    std::cout << "add_yearly_event((2000, 12, 24), 10, \"Julafton\")" << std::endl;
+    cal.add_yearly_event(lab2::Gregorian(2000, 12, 24), 10, "Julafton");
+    
+    std::cout << "add_weekly_event((2000,  2,  1), 5, \"Träning\")" << std::endl;
+    cal.add_weekly_event(lab2::Gregorian(2001,  2,  1), 5, "Träning");
+    
+    std::cout << cal;
 
     return 0;
 }
