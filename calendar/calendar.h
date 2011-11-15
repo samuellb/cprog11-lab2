@@ -132,6 +132,7 @@ template <class T> class Calendar {
         typename std::multimap<T, Event>::iterator it;
         for (it = events.begin(); it != events.end(); it++) {
             Event &event = it->second;
+            
             if (it->first == date && event.name == s) {
                 // remove from parent that this event is related to
                 if (event.is_related) {
@@ -139,7 +140,6 @@ template <class T> class Calendar {
                 }
                 
                 // remove related events
-                //typename std::vector<T>::iterator it = event.related;
                 for (auto pair : event.related) {
                     remove_event(pair.first, pair.second);
                 }
@@ -169,9 +169,54 @@ template <class T> class Calendar {
     }
 
     bool move_event(const Date & from, const Date & to, std::string event) {
-        // TODO update
-        return (remove_event(event, from.day(), from.month(), from.year()) &&
-                add_event(event, to.day(), to.month(), to.year()));
+        int diff = to - from;
+        
+        // Find main event
+        auto range = events.equal_range(T(from));
+        for (auto it = range.first; it != range.second; ++it) {
+            Event &main_ref = it->second;
+            if (main_ref.name == event) {
+                Event main = main_ref;
+                
+                // Move this event
+                events.erase(it);
+                main.date = to;
+                events.insert(std::make_pair(T(to), main));
+                
+                // Move related events
+                for (auto event : main.related) {
+                    T new_date(event.first);
+                    new_date += diff;
+                    
+                    move_event(event.first, new_date, event.second);
+                }
+                
+                // Update reference in parent
+                if (main.is_related) {
+                    bool found = false;
+                    auto range = events.equal_range(main.related_by.first);
+                    for (auto it = range.first; it != range.second; ++it) {
+                        Event &parent = it->second;
+                        if (parent.name == main.related_by.second) {
+                            // Update in vector
+                            for (auto event : main.related) {
+                                if (event.first == from && event.second == main.name) {
+                                    event.first = to;
+                                    found = true;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (!found) {
+                        throw std::logic_error("should not happen");
+                    }
+                }
+                
+                return true;
+            }
+        }
+        return false;
     }
     
     bool add_related_event(const Date & rel_date, int days,

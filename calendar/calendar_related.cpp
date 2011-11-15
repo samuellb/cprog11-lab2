@@ -21,10 +21,20 @@ int main() {
     std::cout << cal;
 
     std::cout << "----------------------------------------" << std::endl;
+    std::cout << "move_event(from=(2000, 11, 11), to=(2000, 11, 20), \"Hämta dator\")" << std::endl;
     
-    cal.remove_event("Hämta dator", 11, 11, 2000);
+    cal.move_event(lab2::Gregorian(2000, 11, 11), lab2::Gregorian(2000, 11, 20), "Hämta dator");
     
     std::cout << cal;
+    
+    std::cout << "----------------------------------------" << std::endl;
+    
+    cal.remove_event("Hämta dator", 20, 11, 2000);
+    std::cout << "remove_event(\"Hämta dator\", 20, 11, 2000);" << std::endl;
+    
+    std::cout << cal;
+    
+    std::cout << "----------------------------------------" << std::endl;
 
     return 0;
 }
