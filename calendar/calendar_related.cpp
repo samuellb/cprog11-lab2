@@ -11,11 +11,18 @@ int main() {
     std::cout << "----------------------------------------" << std::endl;
     lab2::Calendar<lab2::Gregorian> cal;
     cal.set_date(2000, 11, 1);
+    
+    std::cout << "add_event(\"Beställa dator\",  4, 11, 2000)" << std::endl;
     cal.add_event("Beställa dator", 4, 11, 2000);
-    cal.add_related_event(lab2::Gregorian(2000, 11, 4), 7, "Beställa dator", "Hämta dator");
+    
+    std::cout << "add_related_event(date=(2000, 11,  4), days= 7, \"Beställa dator\", \"Hämta dator\")" << std::endl;
+    cal.add_related_event(lab2::Gregorian(2000, 11,  4),  7, "Beställa dator", "Hämta dator");
+    
+    std::cout << "add_related_event(date=(2000, 11, 11), days=-1, \"Hämta dator\", \"Kolla karta\")" << std::endl;
     cal.add_related_event(lab2::Gregorian(2000, 11, 11), -1, "Hämta dator", "Kolla karta");
     
-    cal.add_related_event(lab2::Gregorian(2000, 11, 4), 30, "Beställa dator", "Lämna tillbaka dator");
+    std::cout << "add_related_event(date=(2000, 11,  4), days=30, \"Beställa dator\", \"Lämna tillbaka dator\")" << std::endl;
+    cal.add_related_event(lab2::Gregorian(2000, 11,  4), 30, "Beställa dator", "Lämna tillbaka dator");
     
     std::cout << "----------------------------------------" << std::endl;
     std::cout << cal;
