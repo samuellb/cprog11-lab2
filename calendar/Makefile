@@ -1,7 +1,7 @@
 
 OBJECTS = date.o western_date.o gregorian.o julian.o kattistime.o
 
-CFLAGS += -Wall -Wextra -Weffc++ -O2
+CFLAGS += -Wall -Wextra -Weffc++ -O2 -std=c++0x -g
 
 CXXTESTPATH=../../cxxtest/
 CXXTESTGEN=$(CXXTESTPATH)cxxtestgen.py
@@ -19,6 +19,7 @@ julian.o: date.h western_date.h julian.h
 test.o: date.h western_date.h gregorian.h julian.h
 calendar.o: date.h calendar.h
 calendar_test.o: date.h calendar.h
+calendar_related.o: date.h calendar.h
 cprog09lab22a.o: date.h julian.h
 cprog09lab22b.o: date.h gregorian.h
 cprog09lab22c.o: date.h julian.h gregorian.h
@@ -32,6 +33,9 @@ datetest: $(OBJECTS) datetest.o
 
 calendar_test: $(OBJECTS) calendar_test.o
 	$(CXX) $(CFLAGS) $(OBJECTS) calendar_test.o -o calendar_test
+
+calendar_related: $(OBJECTS) calendar_related.o
+	$(CXX) $(CFLAGS) $(OBJECTS) calendar_related.o -o calendar_related
 
 # wrapper programs used by Kattis
 cprog09lab22a: $(OBJECTS) cprog09lab22a.o

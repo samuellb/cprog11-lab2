@@ -2,6 +2,7 @@
 #define CALENDAR_H
 
 #include <string>
+#include <set>
 #include <iostream>
 #include <map>
 #include <stdexcept>
@@ -16,6 +17,28 @@ template <class T> class Calendar {
 
     enum format {list, cal, icalendar};
 
+    struct Event {
+        T date;
+        std::string name;
+        std::set<std::pair<T, std::string> > related;
+        bool is_related;
+        std::pair<T, std::string> related_by;
+        
+        Event(T d, std::string s) :
+            date(d),
+            name(s),
+            related(),
+            is_related(false),
+            related_by() { }
+        
+        Event(T d, std::string s, const Event &relby) :
+            date(d),
+            name(s),
+            related(),
+            is_related(true),
+            related_by(std::make_pair(relby.date, relby.name)) { }
+    };
+
     Calendar() : date(), events(), outformat(list) { }
     
     template<typename U> Calendar(const Calendar<U> & cal) :
@@ -23,9 +46,9 @@ template <class T> class Calendar {
         events(),
         outformat(cal.outformat) {
 
-        typename std::multimap<U, std::string>::const_iterator it;
+        typename std::multimap<U, Event>::const_iterator it;
         for (it = cal.events.begin(); it != cal.events.end(); it++) {
-            events.insert(std::pair<T, std::string>(it->first, it->second));
+            events.insert(std::pair<T, Event>(it->first, it->second));
         }
     }
     
@@ -35,9 +58,9 @@ template <class T> class Calendar {
         outformat = cal.outformat;
         events.clear();
 
-        typename std::multimap<U, std::string>::const_iterator it;
+        typename std::multimap<U, Event>::const_iterator it;
         for (it = cal.events.begin(); it != cal.events.end(); it++) {
-            events.insert(std::pair<T, std::string>(it->first, it->second));
+            events.insert(std::pair<T, Event>(it->first, it->second));
         }
         
         return *this;
@@ -67,20 +90,22 @@ template <class T> class Calendar {
 
     bool add_event(std::string s, int day, int month, int year) {
         try {
-            T temp_date = T(year, month, day);
-
-            typename std::multimap<T, std::string>::iterator it;
-            for (it = events.begin(); it != events.end(); it++) {
-                if (it->first == temp_date && it->second == s) {
-                    return false;
-                }
-            }
-
-            events.insert(std::pair<T, std::string>(temp_date, s));
-            return true;
+            return add_event(T(year, month, day), s);
         } catch (std::out_of_range) {
             return false;
         }
+    }
+    
+    bool add_event(const T &date, std::string s) {
+        typename std::multimap<T, Event>::iterator it;
+        for (it = events.begin(); it != events.end(); it++) {
+            if (it->first == date && it->second.name == s) {
+                return false;
+            }
+        }
+
+        events.insert(std::pair<T, Event>(date, Event(date, s)));
+        return true;
     }
 
     bool remove_event(std::string s) {
@@ -94,28 +119,88 @@ template <class T> class Calendar {
     bool remove_event(std::string s, int day, int month) {
         return remove_event(s, day, month, date.year());
     }
-
+    
     bool remove_event(std::string s, int day, int month, int year) {
         try {
-            T temp_date = T(year, month, day);
-
-            typename std::multimap<T, std::string>::iterator it;
-            for (it = events.begin(); it != events.end(); it++) {
-                if (it->first == temp_date && it->second == s) {
-                    events.erase(it);
-                    return true;
-                }
-            }
-
-            return false;
+            return remove_event(T(year, month, day), s);
         } catch (std::out_of_range) {
             return false;
         }
     }
 
+    bool remove_event(const T& date, std::string s) {
+        typename std::multimap<T, Event>::iterator it;
+        for (it = events.begin(); it != events.end(); it++) {
+            Event &event = it->second;
+            if (it->first == date && event.name == s) {
+                // remove from parent that this event is related to
+                if (event.is_related) {
+                    detach(event);
+                }
+                
+                // remove related events
+                //typename std::vector<T>::iterator it = event.related;
+                for (auto pair : event.related) {
+                    remove_event(pair.first, pair.second);
+                }
+                
+                events.erase(it);
+                return true;
+            }
+        }
+
+        return false;
+    }
+    
+    void detach(Event &event) {
+        typename std::pair<typename std::multimap<T, Event>::iterator,
+                           typename std::multimap<T, Event>::iterator> range =
+            events.equal_range(event.date);
+        
+        for (typename std::multimap<T, Event>::iterator it = range.first;
+             it != range.second; ++it) {
+            
+            Event &rel_obj = it->second;
+            if (rel_obj.name == event.name) {
+                rel_obj.related.erase(std::make_pair(event.date, event.name));
+                return;
+            }
+        }
+    }
+
     bool move_event(const Date & from, const Date & to, std::string event) {
+        // TODO update
         return (remove_event(event, from.day(), from.month(), from.year()) &&
                 add_event(event, to.day(), to.month(), to.year()));
+    }
+    
+    bool add_related_event(const Date & rel_date, int days,
+                           std::string rel_event, std::string new_event) {
+        // Find main event
+        typename std::pair<typename std::multimap<T, Event>::iterator,
+                           typename std::multimap<T, Event>::iterator> range =
+            events.equal_range(T(rel_date));
+        
+        for (typename std::multimap<T, Event>::iterator it = range.first; it != range.second; ++it) {
+            Event &rel_obj = it->second;
+            if (rel_obj.name == rel_event) {
+                
+                // Found
+                
+                // Add
+                T new_date(rel_date);
+                new_date += days;
+                
+                if (!add_event(new_date, new_event)) return false;
+                
+                // Add relation
+                rel_obj.related.insert(std::make_pair(new_date, new_event));
+                
+                return true;
+            }
+        }
+        return false;
+        
     }
 
     void set_format(format outformat) {
@@ -152,9 +237,9 @@ template <class T> class Calendar {
         }
         os << std::endl << std::endl;
 
-        typename std::multimap<T, std::string>::const_iterator it;
+        typename std::multimap<T, Event>::const_iterator it;
         for (it = events.begin(); it != events.end(); ++it) {
-            os << (*it).first << " : " << (*it).second << std::endl;
+            os << (*it).first << " : " << (*it).second.name << std::endl;
         }
         os << std::endl;
 
@@ -162,10 +247,10 @@ template <class T> class Calendar {
     }
 
     std::ostream & format_list(std::ostream & os) const {
-        typename std::multimap<T, std::string>::const_iterator it;
+        typename std::multimap<T, Event>::const_iterator it;
         for (it = events.begin(); it != events.end(); ++it) {
             if ((*it).first > date) {
-                os << (*it).first << " : " << (*it).second << std::endl;
+                os << (*it).first << " : " << (*it).second.name << std::endl;
             }
         }
 
@@ -176,12 +261,12 @@ template <class T> class Calendar {
         os << "BEGIN:VCALENDAR" << std::endl;
         os << "VERSION:2.0" << std::endl;
         os << "PRODID:saker" << std::endl;
-        typename std::multimap<T, std::string>::const_iterator it;
+        typename std::multimap<T, Event>::const_iterator it;
         for (it = events.begin(); it != events.end(); ++it) {
             os << "BEGIN:VEVENT" << std::endl;
             os << "DTSTART:" << (*it).first.year() << (*it).first.month() << (*it).first.day() << "T080000" << std::endl;
             os << "DTEND:" << (*it).first.year() << (*it).first.month() << (*it).first.day() << "T090000" << std::endl;
-            os << "SUMMARY:" << (*it).second << std::endl;
+            os << "SUMMARY:" << (*it).second.name << std::endl;
             os << "END:VEVENT" << std::endl;
         }
         os << "END:VCALENDAR" << std::endl;
@@ -202,7 +287,7 @@ template <class T> class Calendar {
     }
 
     T date;
-    std::multimap<T, std::string> events;
+    std::multimap<T, Event> events;
     format outformat;
 };
 
