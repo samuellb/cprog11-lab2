@@ -254,7 +254,7 @@ template <class T> class Calendar {
         
     }
     
-    bool add_yearly_event(const Date & date, int num_recur, std::string name) {        
+    bool add_yearly_event(const Date & date, std::string name, int num_recur=100) {
         // First one
         if (!add_event(Event(date, name))) return false;
         
@@ -269,7 +269,7 @@ template <class T> class Calendar {
         return ok;
     }
     
-    bool add_weekly_event(const Date & date, int num_recur, std::string name) {        
+    bool add_weekly_event(const Date & date, std::string name, int num_recur=100) {
         // First one
         if (!add_event(Event(date, name))) return false;
         
