@@ -25,19 +25,44 @@ template <class T> class Calendar {
         bool is_related;
         std::pair<T, std::string> related_by;
         
-        Event(T d, std::string s) :
+        bool birthday;
+        
+        Event(T d, std::string s, bool bday=false) :
             date(d),
             name(s),
             related(),
             is_related(false),
-            related_by() { }
+            related_by(),
+            birthday(bday) { }
         
-        Event(T d, std::string s, const Event &relby) :
+        Event(T d, std::string s, const Event &relby, bool bday=false) :
             date(d),
             name(s),
             related(),
             is_related(true),
-            related_by(std::make_pair(relby.date, relby.name)) { }
+            related_by(std::make_pair(relby.date, relby.name)),
+            birthday(bday) { }
+        
+        friend std::ostream & operator<<(std::ostream & os, const Event &event) {
+            os << event.name;
+            if (event.birthday) {
+                os << " ";
+                bool birth = true;
+                if (event.is_related) {
+                    int age = event.date.year() - event.related_by.first.year();
+                    if (age > 0) {
+                        os << age;
+                        os << " years";
+                        birth = false;
+                    }
+                }
+                
+                if (birth) {
+                    os << "was born";
+                }
+            }
+            return os;
+        }
     };
 
     Calendar() : date(), events(), outformat(list) { }
@@ -227,7 +252,8 @@ template <class T> class Calendar {
     }
     
     bool add_related_event(const Date & rel_date, int days,
-                           std::string rel_event, std::string new_event) {
+                           std::string rel_event, std::string new_event,
+                           bool bday=false) {
         // Find main event
         auto range = events.equal_range(T(rel_date));
         
@@ -241,7 +267,7 @@ template <class T> class Calendar {
                 T new_date(rel_date);
                 new_date += days;
                 
-                Event new_obj(new_date, new_event, rel_obj);
+                Event new_obj(new_date, new_event, rel_obj, bday);
                 if (!add_event(new_obj)) return false;
                 
                 // Add relation
@@ -284,6 +310,23 @@ template <class T> class Calendar {
         return ok;
     }
     
+    bool add_birthday(const Date & birth_date, std::string name, int years_in_future=15) {        
+        // First one
+        if (!add_event(Event(birth_date, name, true))) return false;
+        
+        bool ok = true;
+        int years = date.year() - birth_date.year() + years_in_future;
+        
+        for (int i = 1; i < years; ++i) {
+            T d(birth_date);
+            d.add_year(i);
+            if (!add_related_event(birth_date, d - birth_date, name, name, true))
+                ok = false;
+        }
+        
+        return ok;
+    }
+    
     void set_format(format outformat) {
         this->outformat = outformat;
     }
@@ -319,7 +362,7 @@ template <class T> class Calendar {
         os << std::endl << std::endl;
 
         for (auto it = events.begin(); it != events.end(); ++it) {
-            os << it->first << " : " << it->second.name << std::endl;
+            os << it->first << " : " << it->second << std::endl;
         }
         os << std::endl;
 
@@ -329,7 +372,7 @@ template <class T> class Calendar {
     std::ostream & format_list(std::ostream & os) const {
         for (auto it = events.begin(); it != events.end(); ++it) {
             if (it->first > date) {
-                os << it->first << " : " << it->second.name << std::endl;
+                os << it->first << " : " << it->second << std::endl;
             }
         }
 

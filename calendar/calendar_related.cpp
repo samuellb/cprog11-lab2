@@ -49,6 +49,14 @@ int main() {
     std::cout << "add_weekly_event((2000,  2,  1), \"Träning\", 5)" << std::endl;
     cal.add_weekly_event(lab2::Gregorian(2001,  2,  1), "Träning", 5);
     
+    std::cout << "add_birthday((1988, 12, 30), \"Samuel\")" << std::endl;
+    cal.add_birthday(lab2::Gregorian(1988, 12, 30), "Samuel");
+    
+    std::cout << "add_birthday((2008,  2, 29), \"Maja\")" << std::endl;
+    cal.add_birthday(lab2::Gregorian(2008,  2,  29), "Maja");
+    
+    std::cout << "----------------------------------------" << std::endl;
+    
     std::cout << cal;
 
     return 0;
