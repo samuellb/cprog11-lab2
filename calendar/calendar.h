@@ -20,7 +20,7 @@ template <class T> class Calendar {
     struct Event {
         T date;
         std::string name;
-        std::set<std::pair<T, std::string> > related;
+        std::set<std::pair<T, std::string>> related;
         
         bool is_related;
         std::pair<T, std::string> related_by;
@@ -47,8 +47,7 @@ template <class T> class Calendar {
         events(),
         outformat(cal.outformat) {
 
-        typename std::multimap<U, Event>::const_iterator it;
-        for (it = cal.events.begin(); it != cal.events.end(); it++) {
+        for (auto it = cal.events.begin(); it != cal.events.end(); ++it) {
             events.insert(std::pair<T, Event>(it->first, it->second));
         }
     }
@@ -59,8 +58,7 @@ template <class T> class Calendar {
         outformat = cal.outformat;
         events.clear();
 
-        typename std::multimap<U, Event>::const_iterator it;
-        for (it = cal.events.begin(); it != cal.events.end(); it++) {
+        for (auto it = cal.events.begin(); it != cal.events.end(); ++it) {
             events.insert(std::pair<T, Event>(it->first, it->second));
         }
         
@@ -99,8 +97,7 @@ template <class T> class Calendar {
     }
     
     bool add_event(const Event &event) {
-        typename std::multimap<T, Event>::iterator it;
-        for (it = events.begin(); it != events.end(); it++) {
+        for (auto it = events.begin(); it != events.end(); ++it) {
             if (it->first == event.date && it->second.name == event.name) {
                 return false;
             }
@@ -131,20 +128,17 @@ template <class T> class Calendar {
     }
 
     bool remove_event(const T& date, std::string s) {
-        typename std::multimap<T, Event>::iterator it;
-        for (it = events.begin(); it != events.end(); it++) {
+        for (auto it = events.begin(); it != events.end(); ++it) {
             Event &event = it->second;
             
             if (it->first == date && event.name == s) {
                 // remove from parent that this event is related to
                 if (event.is_related) {
-                    std::cout << "remove parent" << std::endl;
                     detach(event);
                 }
                 
                 // remove related events
                 for (auto pair : event.related) {
-                    std::cout << "   removed rleated " << pair.first << " " << pair.second << std::endl;
                     remove_event(pair.first, pair.second);
                 }
                 
@@ -157,13 +151,9 @@ template <class T> class Calendar {
     }
     
     void detach(Event &event) {
-        typename std::pair<typename std::multimap<T, Event>::iterator,
-                           typename std::multimap<T, Event>::iterator> range =
-            events.equal_range(event.date);
+        auto range = events.equal_range(event.date);
         
-        for (typename std::multimap<T, Event>::iterator it = range.first;
-             it != range.second; ++it) {
-            
+        for (auto it = range.first; it != range.second; ++it) {
             Event &rel_obj = it->second;
             if (rel_obj.name == event.name) {
                 rel_obj.related.erase(std::make_pair(event.date, event.name));
@@ -188,41 +178,16 @@ template <class T> class Calendar {
                 // Update reference in parent
                 if (main.is_related) {
                     bool found = false;
-                    //auto range = events.equal_range(main.related_by.first);
-                    typename std::pair<typename std::multimap<T, Event>::iterator,
-                           typename std::multimap<T, Event>::iterator> range = events.equal_range(main.related_by.first);
-                    std::cout << "is related by " << main.related_by.first << " "<< main.related_by.second << std::endl;
-                    //for (auto it = range.first; it != range.second; ++it) {
-                    typename std::multimap<T, Event>::iterator it;
-                    for (it = range.first; it != range.second; ++it) {
+                    auto range = events.equal_range(main.related_by.first);
+                    for (auto it = range.first; it != range.second; ++it) {
                         Event &parent = it->second;
-                        std::cout << "in" << std::endl;
                         if (parent.name == main.related_by.second) {
                             // Update in vector
-                            std::cout << "in parent" << std::endl;
-                            //typename std::set<typename std::pair<T, std::string>>::iterator rit;
-                            //for (typename std::pair<T, std::string> &event : parent.related) {
-                            /*for (auto rit = parent.related.begin(); rit != parent.related.end(); ++rit) {
-                                if (rit->first == main.date && rit->second == main.name) {
-                                    
-                                    //std::pair<T, std::string> &pair = *rit;
-                                    //std::pair<T, std::string> &pair = const_cast<std::pair<T, std::string>*>(*rit);
-                                    //pair.first = to;
-                                    const T &to_ref = (*rit).first;
-                                    const_cast<T&>(to_ref) = to;
-                                    //(*rit).first = to;
-                                    std::cout << "   set to to " << to << std::endl;
-                                    found = true;
-                                }
-                            }*/
-                            
                             for (auto rit = parent.related.begin(); rit != parent.related.end(); ++rit) {
                                 if (rit->first == main.date && rit->second == main.name) {
-                                    std::cout << "   old value " << rit->first << std::endl;
                                     auto modified = *rit;
                                     modified.first = to;
                                     
-                                    std::cout << "   set to " << modified.first << std::endl;
                                     parent.related.insert(modified);
                                     parent.related.erase(rit);
                                     found = true;
@@ -235,57 +200,26 @@ template <class T> class Calendar {
                     if (!found) {
                         throw std::logic_error("should not happen");
                     }
-                    
-                    
-                    {
-                    typename std::pair<typename std::multimap<T, Event>::iterator,
-                           typename std::multimap<T, Event>::iterator> range = events.equal_range(main.related_by.first);
-                    std::cout << "is related by " << main.related_by.first << " "<< main.related_by.second << std::endl;
-                    //for (auto it = range.first; it != range.second; ++it) {
-                    typename std::multimap<T, Event>::iterator it;
-                    for (it = range.first; it != range.second; ++it) {
-                        Event &parent = it->second;
-                        std::cout << "in" << std::endl;
-                        if (parent.name == main.related_by.second) {
-                            for (auto rit = parent.related.begin(); rit != parent.related.end(); ++rit) {
-                                if (rit->second == main.name) {
-                                    std::cout << "   new value " << rit->first << std::endl;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    }
                 }
-                std::cout << "update related_by" << std::endl;
 
                 // Move related events
                 for (auto event : std::set<std::pair<T, std::string>>(main.related)) {
                     T new_date(event.first);
                     new_date += diff;
                     
-                    std::cout << "recursive move " <<  event.second << std::endl;
                     move_event(event.first, new_date, event.second, true, to);
-                    std::cout << "out " <<  event.second << std::endl;
                 }
                 
                 // Update references to parent
-                std::cout << "move parent" << std::endl;
                 if (moved_parent) {
                     main.related_by.first = new_parent_date;
                 }
-                std::cout << "move this" << std::endl;
                                 
                 // Move this event
                 Event main_copy = main;
-                std::cout << "erase" << std::endl;
                 events.erase(it);
-                std::cout << "modify" << std::endl;
                 main_copy.date = to;
-                std::cout << "insert" << std::endl;
                 events.insert(std::make_pair(T(to), main_copy));
-                std::cout << "loop" << std::endl;
-                
                 return true;
             }
         }
@@ -295,11 +229,9 @@ template <class T> class Calendar {
     bool add_related_event(const Date & rel_date, int days,
                            std::string rel_event, std::string new_event) {
         // Find main event
-        typename std::pair<typename std::multimap<T, Event>::iterator,
-                           typename std::multimap<T, Event>::iterator> range =
-            events.equal_range(T(rel_date));
+        auto range = events.equal_range(T(rel_date));
         
-        for (typename std::multimap<T, Event>::iterator it = range.first; it != range.second; ++it) {
+        for (auto it = range.first; it != range.second; ++it) {
             Event &rel_obj = it->second; // main object
             if (rel_obj.name == rel_event) {
                 
@@ -310,7 +242,6 @@ template <class T> class Calendar {
                 new_date += days;
                 
                 Event new_obj(new_date, new_event, rel_obj);
-                std::cout << "  adding rel obj to " << rel_obj.name << " :  " << new_obj.name << "    xx " << new_obj.related_by.second << std::endl;
                 if (!add_event(new_obj)) return false;
                 
                 // Add relation
@@ -357,8 +288,7 @@ template <class T> class Calendar {
         }
         os << std::endl << std::endl;
 
-        typename std::multimap<T, Event>::const_iterator it;
-        for (it = events.begin(); it != events.end(); ++it) {
+        for (auto it = events.begin(); it != events.end(); ++it) {
             os << (*it).first << " : " << (*it).second.name << std::endl;
         }
         os << std::endl;
@@ -367,10 +297,9 @@ template <class T> class Calendar {
     }
 
     std::ostream & format_list(std::ostream & os) const {
-        typename std::multimap<T, Event>::const_iterator it;
-        for (it = events.begin(); it != events.end(); ++it) {
+        for (auto it = events.begin(); it != events.end(); ++it) {
             if ((*it).first > date) {
-                os << (*it).first << " : " << (*it).second.name << " -- relby:" << it->second.related_by.first << it->second.related_by.second << "   relateds: " << it->second.related.size() << std::endl;
+                os << (*it).first << " : " << (*it).second.name << std::endl;
             }
         }
 
@@ -381,8 +310,7 @@ template <class T> class Calendar {
         os << "BEGIN:VCALENDAR" << std::endl;
         os << "VERSION:2.0" << std::endl;
         os << "PRODID:saker" << std::endl;
-        typename std::multimap<T, Event>::const_iterator it;
-        for (it = events.begin(); it != events.end(); ++it) {
+        for (auto it = events.begin(); it != events.end(); ++it) {
             os << "BEGIN:VEVENT" << std::endl;
             os << "DTSTART:" << (*it).first.year() << (*it).first.month() << (*it).first.day() << "T080000" << std::endl;
             os << "DTEND:" << (*it).first.year() << (*it).first.month() << (*it).first.day() << "T090000" << std::endl;
