@@ -387,7 +387,7 @@ template <class T> class Calendar {
             os << "BEGIN:VEVENT" << std::endl;
             os << "DTSTART:" << it->first.year() << it->first.month() << it->first.day() << "T080000" << std::endl;
             os << "DTEND:" << it->first.year() << it->first.month() << it->first.day() << "T090000" << std::endl;
-            os << "SUMMARY:" << it->second.name << std::endl;
+            os << "SUMMARY:" << it->second << std::endl;
             os << "END:VEVENT" << std::endl;
         }
         os << "END:VCALENDAR" << std::endl;
