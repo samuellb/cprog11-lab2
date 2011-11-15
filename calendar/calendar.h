@@ -385,8 +385,12 @@ template <class T> class Calendar {
         os << "PRODID:saker" << std::endl;
         for (auto it = events.begin(); it != events.end(); ++it) {
             os << "BEGIN:VEVENT" << std::endl;
-            os << "DTSTART:" << it->first.year() << it->first.month() << it->first.day() << "T080000" << std::endl;
-            os << "DTEND:" << it->first.year() << it->first.month() << it->first.day() << "T090000" << std::endl;
+            os << "DTSTART:" << it->first.year();
+            os << std::setfill('0') << std::setw(2) << it->first.month() << std::resetiosflags(std::ios::left);
+            os << std::setfill('0') << std::setw(2) << it->first.day() << std::resetiosflags(std::ios::left) << "T080000" << std::endl;
+            os << "DTEND:" << it->first.year();
+            os << std::setfill('0') << std::setw(2) << it->first.month() << std::resetiosflags(std::ios::left);
+            os << std::setfill('0') << std::setw(2) << it->first.day() << std::resetiosflags(std::ios::left) << "T090000" << std::endl;
             os << "SUMMARY:" << it->second << std::endl;
             os << "END:VEVENT" << std::endl;
         }
