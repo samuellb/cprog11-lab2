@@ -24,6 +24,10 @@ cprog09lab22a.o: date.h julian.h
 cprog09lab22b.o: date.h gregorian.h
 cprog09lab22c.o: date.h julian.h gregorian.h
 cprog09lab23.o: calendar.h date.h
+menu.o: action.h menu.h menu_item.h
+
+interface: $(OBJECTS) calendar.o menu.o
+	$(CXX) $(CFLAGS) $(OBJECTS) main.cpp -o interface
 
 test: $(OBJECTS) test.o
 	$(CXX) $(CFLAGS) $(OBJECTS) test.o -o test
