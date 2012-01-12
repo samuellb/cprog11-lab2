@@ -29,10 +29,12 @@ template<typename T> int work() {
     Menu main_menu("Huvudmeny");
 
     // Main menu
-    SelectDateMenuItem<T> select_date("Välj datum", calendar);
+    CalendarMenuItem3<T, decltype(&lab2::Calendar<T>::set_date), int, int, int> select_date(
+        "Välj datum", calendar, &lab2::Calendar<T>::set_date, {"år", "månad", "dag"});
     main_menu.add(select_date);
 
-    SelectMonthMenuItem<T> select_month("Välj månad", calendar);
+    CalendarMenuItem1<T, decltype(&lab2::Calendar<T>::set_month), int> select_month(
+        "Välj månad", calendar, &lab2::Calendar<T>::set_month, {"månad"});
     main_menu.add(select_month);
 
     Menu format_menu("Formatmeny");
@@ -41,11 +43,15 @@ template<typename T> int work() {
     main_menu.add(event_menu);
     
     // Format menu
-    SelectFormatMenuItem<T> format_list("Lista", calendar, lab2::Calendar<T>::format::list);
-    SelectFormatMenuItem<T> format_calendar("Kalender", calendar, lab2::Calendar<T>::format::cal);
-    SelectFormatMenuItem<T> format_ical("ical", calendar, lab2::Calendar<T>::format::icalendar);
+    typedef CalendarMenuItemBound<T, decltype(&lab2::Calendar<T>::set_format), typename lab2::Calendar<T>::format> FormatMenuItem;
+    
+    FormatMenuItem format_list("Lista", calendar, &lab2::Calendar<T>::set_format, lab2::Calendar<T>::format::list);
     format_menu.add(format_list);
-    format_menu.add(format_calendar);
+    
+    FormatMenuItem format_cal("Kalender", calendar, &lab2::Calendar<T>::set_format, lab2::Calendar<T>::format::cal);
+    format_menu.add(format_cal);
+    
+    FormatMenuItem format_ical("ical", calendar, &lab2::Calendar<T>::set_format, lab2::Calendar<T>::format::icalendar);
     format_menu.add(format_ical);
     
     // Event menu

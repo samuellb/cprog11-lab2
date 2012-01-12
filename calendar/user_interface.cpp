@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "user_interface.h"
 
 // current user interface object
@@ -16,15 +14,9 @@ void UserInterface::call_print() {
     user_interface->print();
 }
 
-int UserInterface::read(std::string text) {
-    std::cout << text << " > ";
-    
-    int input;
-    std::cin >> input;
-    
+void UserInterface::read_newline() {
     std::string s;
     std::getline(std::cin, s); // read newline from input (>> does not read it)
-    return input;
 }
 
 void UserInterface::check_input(bool ok) {
