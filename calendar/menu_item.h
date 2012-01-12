@@ -27,7 +27,6 @@ template<typename T> class SelectDateMenuItem : public MenuItem {
             std::cin >> day;
 
             calendar.set_date(year, month, day);
-            std::cout << calendar << std::endl;
         }
         
     private:
