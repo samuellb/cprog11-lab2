@@ -54,7 +54,7 @@ template<typename T> class SelectFormatMenuItem : public MenuItem {
         
     private:
         lab2::Calendar<T> & calendar;
-        typename lab2::Calendar<T>::format format;
+        const typename lab2::Calendar<T>::format format;
 };
 
 #endif

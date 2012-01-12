@@ -8,11 +8,11 @@ class Action {
         Action(std::string n) : name(n) {}
         virtual ~Action() {}
 
-        inline virtual std::string get_name() { return name; }
+        inline virtual std::string get_name() const { return name; }
         virtual void run() {}
 
     protected:
-        std::string name;
+        const std::string name;
 };
 
 #endif

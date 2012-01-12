@@ -16,16 +16,7 @@ class Menu : public Action {
             items.push_back(&action);
         }
 
-        void print() {
-            std::cout << get_name() << std::endl;
-            std::cout << std::string(get_name().size(), '=') << std::endl;
-            for (unsigned int i = 0; i < items.size(); ++i) {
-                std::cout << (i+1) << ". " << items[i]->get_name() << std::endl;
-            }
-            std::cout << "0. Tillbaka/Avsluta" << std::endl;
-        }
-
-        void run() {
+        virtual void run() {
             while (true) {
                 print();
                 std::cout << "\nDitt val: ";
@@ -43,6 +34,15 @@ class Menu : public Action {
 
     private:
         std::vector<Action*> items;
+
+        void print() const {
+            std::cout << get_name() << std::endl;
+            std::cout << std::string(get_name().size(), '=') << std::endl;
+            for (unsigned int i = 0; i < items.size(); ++i) {
+                std::cout << (i+1) << ". " << items[i]->get_name() << std::endl;
+            }
+            std::cout << "0. Tillbaka/Avsluta" << std::endl;
+        }
 };
 
 #endif
