@@ -99,6 +99,16 @@ template <class T> class Calendar {
 
         return true;
     }
+    
+    bool set_month(int month) {
+        try {
+            date = T(date.year(), month, date.day());
+        } catch (std::out_of_range) {
+            return false;
+        }
+
+        return true;
+    }
 
     bool add_event(std::string s) {
         return add_event(s, date.day(), date.month(), date.year());

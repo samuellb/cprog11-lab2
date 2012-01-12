@@ -37,7 +37,13 @@ template<typename T> class SelectMonthMenuItem : public MenuItem {
     public:
         SelectMonthMenuItem(std::string n, lab2::Calendar<T> & c) : MenuItem(n), calendar(c) {}
 
-        virtual void run() {};
+        virtual void run() {
+            unsigned int month;
+            std::cout << "månad > ";
+            std::cin >> month;
+
+            calendar.set_month(month);
+        };
         
     private:
         lab2::Calendar<T> & calendar;
