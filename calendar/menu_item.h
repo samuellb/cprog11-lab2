@@ -44,4 +44,17 @@ template<typename T> class SelectMonthMenuItem : public MenuItem {
         lab2::Calendar<T> & calendar;
 };
 
+template<typename T> class SelectFormatMenuItem : public MenuItem {
+    public:
+        SelectFormatMenuItem(std::string n, lab2::Calendar<T> & c, typename lab2::Calendar<T>::format f) : MenuItem(n), calendar(c), format(f) {}
+
+        virtual void run() {
+            calendar.set_format(format);
+        };
+        
+    private:
+        lab2::Calendar<T> & calendar;
+        typename lab2::Calendar<T>::format format;
+};
+
 #endif

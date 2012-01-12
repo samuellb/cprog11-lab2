@@ -20,6 +20,13 @@ template<typename T> int work() {
 
     main_menu.add(format_menu);
     main_menu.add(event_menu);
+    
+    SelectFormatMenuItem<T> format_list("Lista", calendar, lab2::Calendar<T>::format::list);
+    SelectFormatMenuItem<T> format_calendar("Kalender", calendar, lab2::Calendar<T>::format::cal);
+    SelectFormatMenuItem<T> format_ical("ical", calendar, lab2::Calendar<T>::format::icalendar);
+    format_menu.add(format_list);
+    format_menu.add(format_calendar);
+    format_menu.add(format_ical);
 
     main_menu.run();
 
