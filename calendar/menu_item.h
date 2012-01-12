@@ -23,9 +23,9 @@ template<typename C, typename M, typename A1, typename A2, typename A3> class Ca
             prompts(p) {}
 
         virtual void run() {
-            A1 a1 = UserInterface::read<A1>(prompts[0]);
-            A2 a2 = UserInterface::read<A2>(prompts[1]);
-            A3 a3 = UserInterface::read<A3>(prompts[2]);
+            A1 a1 = UIRead::read<A1>(prompts[0]);
+            A2 a2 = UIRead::read<A2>(prompts[1]);
+            A3 a3 = UIRead::read<A3>(prompts[2]);
 
             UserInterface::check_input((calendar.*method)(a1, a2, a3));
         }
@@ -45,8 +45,8 @@ template<typename C, typename M, typename A1, typename A2> class CalendarMenuIte
             prompts(p) {}
 
         virtual void run() {
-            A1 a1 = UserInterface::read<A1>(prompts[0]);
-            A2 a2 = UserInterface::read<A2>(prompts[1]);
+            A1 a1 = UIRead::read<A1>(prompts[0]);
+            A2 a2 = UIRead::read<A2>(prompts[1]);
 
             UserInterface::check_input((calendar.*method)(a1, a2));
         }
@@ -66,7 +66,7 @@ template<typename C, typename M, typename A1> class CalendarMenuItem1 : public M
             prompts(p) {}
 
         virtual void run() {
-            A1 a1 = UserInterface::read<A1>(prompts[0]);
+            A1 a1 = UIRead::read<A1>(prompts[0]);
 
             UserInterface::check_input((calendar.*method)(a1));
         }

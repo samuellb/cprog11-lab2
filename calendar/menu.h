@@ -24,6 +24,7 @@ class Menu : public Action {
 
                 unsigned int input;
                 std::cin >> input;
+                UIRead::read_newline();
 
                 if (input > 0 && input <= items.size()) {
                     items[input-1]->run();
