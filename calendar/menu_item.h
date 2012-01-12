@@ -13,6 +13,15 @@ class MenuItem : public Action {
         virtual ~MenuItem() {}
 };
 
+static void check_input(bool ok) {
+    if (!ok) {
+        std::string s;
+        std::cout << "ogiltigt val!" << std::endl;
+        std::getline(std::cin, s); // read newline from input (>> does not read it)
+        std::getline(std::cin, s); // wait for another newline
+    }
+}
+
 template<typename T> class SelectDateMenuItem : public MenuItem {
     public:
         SelectDateMenuItem(std::string n, lab2::Calendar<T> & c) : MenuItem(n), calendar(c) {}
@@ -26,7 +35,7 @@ template<typename T> class SelectDateMenuItem : public MenuItem {
             std::cout << "dag > ";
             std::cin >> day;
 
-            calendar.set_date(year, month, day);
+            check_input(calendar.set_date(year, month, day));
         }
         
     private:
@@ -42,7 +51,7 @@ template<typename T> class SelectMonthMenuItem : public MenuItem {
             std::cout << "månad > ";
             std::cin >> month;
 
-            calendar.set_month(month);
+            check_input(calendar.set_month(month));
         };
         
     private:
