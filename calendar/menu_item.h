@@ -13,10 +13,9 @@ class MenuItem : public Action {
         virtual ~MenuItem() {}
 };
 
-class SelectDateMenuItem : public Action { 
+template<typename T> class SelectDateMenuItem : public MenuItem {
     public:
-        lab2::Calendar & calendar;
-        SelectDateMenuItem(std::string n, lab2::Calendar & c) : Action(n), calendar(c) {}
+        SelectDateMenuItem(std::string n, lab2::Calendar<T> & c) : MenuItem(n), calendar(c) {}
 
         virtual void run() {
             unsigned int year, month, day;
@@ -29,14 +28,20 @@ class SelectDateMenuItem : public Action {
 
             calendar.set_date(year, month, day);
             std::cout << calendar << std::endl;
-        };
+        }
+        
+    private:
+        lab2::Calendar<T> & calendar;
 };
 
-class SelectMonthMenuItem : public Action {
+template<typename T> class SelectMonthMenuItem : public MenuItem {
     public:
-        SelectMonthMenuItem(std::string n) : Action(n) {}
+        SelectMonthMenuItem(std::string n, lab2::Calendar<T> & c) : MenuItem(n), calendar(c) {}
 
         virtual void run() {};
+        
+    private:
+        lab2::Calendar<T> & calendar;
 };
 
 #endif

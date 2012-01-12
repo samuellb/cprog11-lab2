@@ -4,18 +4,18 @@
 #include "menu_item.h"
 #include "kattistime.h"
 
-int main() {
+template<typename T> int work() {
     set_k_time(std::time(NULL));
-    lab2::Calendar<lab2::Gregorian> calendar;
+    lab2::Calendar<T> calendar;
 
     Menu main_menu("Huvudmeny");
     Menu format_menu("Formatmeny");
     Menu event_menu("Händelsemeny");
 
-    SelectDateMenuItem select_date("Välj datum", calendar);
+    SelectDateMenuItem<T> select_date("Välj datum", calendar);
     main_menu.add(select_date);
 
-    SelectMonthMenuItem select_month("Välj månad", calendar);
+    SelectMonthMenuItem<T> select_month("Välj månad", calendar);
     main_menu.add(select_month);
 
     main_menu.add(format_menu);
@@ -24,6 +24,10 @@ int main() {
     main_menu.run();
 
     return 0;
+}
+
+int main() {
+    return work<lab2::Gregorian>();
 }
 
 
