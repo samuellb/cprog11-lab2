@@ -1,5 +1,5 @@
 
-OBJECTS = date.o western_date.o gregorian.o julian.o kattistime.o
+OBJECTS = date.o western_date.o gregorian.o julian.o kattistime.o user_interface.o
 
 CFLAGS += -Wall -Wextra -Weffc++ -O2 -std=c++0x -g
 

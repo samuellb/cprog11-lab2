@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "action.h"
+#include "user_interface.h"
 
 class Menu : public Action {
     public:
@@ -36,6 +37,8 @@ class Menu : public Action {
         std::vector<Action*> items;
 
         void print() const {
+            UserInterface::call_print();
+            
             std::cout << get_name() << std::endl;
             std::cout << std::string(get_name().size(), '=') << std::endl;
             for (unsigned int i = 0; i < items.size(); ++i) {

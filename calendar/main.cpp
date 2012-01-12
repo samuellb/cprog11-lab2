@@ -3,6 +3,23 @@
 #include "menu.h"
 #include "menu_item.h"
 #include "kattistime.h"
+#include "user_interface.h"
+
+// Defines how the user interface should look like (used by the menu)
+template<typename T> class CalendarUI : public UserInterface {
+    public:
+        CalendarUI(lab2::Calendar<T> & c) : calendar(c) { }
+        
+        virtual void print() {
+            for (int i = 0; i < 30; i++) {
+                std::cout << "\n"; // print newline without flushing output buffer
+            }
+            std::cout << calendar << std::endl;
+        }
+        
+    private:
+        lab2::Calendar<T> & calendar;
+};
 
 template<typename T> int work() {
     set_k_time(std::time(NULL));
@@ -28,6 +45,9 @@ template<typename T> int work() {
     format_menu.add(format_list);
     format_menu.add(format_calendar);
     format_menu.add(format_ical);
+
+    CalendarUI<T> ui(calendar);
+    UserInterface::set_ui(ui);
 
     main_menu.run();
 
