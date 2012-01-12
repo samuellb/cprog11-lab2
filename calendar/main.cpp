@@ -7,6 +7,7 @@
 template<typename T> int work() {
     set_k_time(std::time(NULL));
     lab2::Calendar<T> calendar;
+    calendar.set_format(lab2::Calendar<T>::format::cal);
 
     Menu main_menu("Huvudmeny");
     Menu format_menu("Formatmeny");
