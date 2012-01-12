@@ -22,7 +22,7 @@ void UserInterface::check_input(bool ok) {
     }
 }
 
-void UIRead::read_newline() {
+void UserInterface::read_newline() {
     std::string s;
     std::getline(std::cin, s); // read newline from input (>> does not read it)
 }

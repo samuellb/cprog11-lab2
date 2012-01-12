@@ -16,35 +16,35 @@ class UserInterface {
         static void call_print();
                 
         static void check_input(bool);
+        template<typename T> static inline T read(std::string text);
+        static void read_newline();
 
     private:
         static UserInterface *user_interface;
 };
 
-namespace UIRead { // can't use template specialization inside a class
-    
-    void read_newline();
+// can't use template specialization inside a class
 
-    // inline is needed to prevent linkage errors (multiple definition)
-    template<typename T> inline T read(std::string text) {
-        std::cout << text << " > ";
-        
-        T input;
-        std::cin >> input;
-        
-        read_newline();
-        return input;
-    }
-    
-    template<> inline std::string read<std::string>(std::string text) {
-        std::cout << text << " > ";
-        
-        std::string input;
-        std::getline(std::cin, input); // read one line (not just a single word)
-        return input;
-    }
 
+// inline is needed to prevent linkage errors (multiple definition)
+template<typename T> inline T UserInterface::read(std::string text) {
+    std::cout << text << " > ";
+    
+    T input;
+    std::cin >> input;
+    
+    read_newline();
+    return input;
 }
+
+template<> inline std::string UserInterface::read<std::string>(std::string text) {
+    std::cout << text << " > ";
+    
+    std::string input;
+    std::getline(std::cin, input); // read one line (not just a single word)
+    return input;
+}
+
 
 #endif
 
