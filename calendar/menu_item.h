@@ -13,29 +13,16 @@ class MenuItem : public Action {
         virtual ~MenuItem() {}
 };
 
-static void check_input(bool ok) {
-    if (!ok) {
-        std::string s;
-        std::cout << "ogiltigt val!" << std::endl;
-        std::getline(std::cin, s); // read newline from input (>> does not read it)
-        std::getline(std::cin, s); // wait for another newline
-    }
-}
-
 template<typename T> class SelectDateMenuItem : public MenuItem {
     public:
         SelectDateMenuItem(std::string n, lab2::Calendar<T> & c) : MenuItem(n), calendar(c) {}
 
         virtual void run() {
-            unsigned int year, month, day;
-            std::cout << "år > ";
-            std::cin >> year;
-            std::cout << "månad > ";
-            std::cin >> month;
-            std::cout << "dag > ";
-            std::cin >> day;
+            int year = UserInterface::read("år");
+            int month = UserInterface::read("månad");
+            int day = UserInterface::read("dag");
 
-            check_input(calendar.set_date(year, month, day));
+            UserInterface::check_input(calendar.set_date(year, month, day));
         }
         
     private:
@@ -47,11 +34,9 @@ template<typename T> class SelectMonthMenuItem : public MenuItem {
         SelectMonthMenuItem(std::string n, lab2::Calendar<T> & c) : MenuItem(n), calendar(c) {}
 
         virtual void run() {
-            unsigned int month;
-            std::cout << "månad > ";
-            std::cin >> month;
+            int month = UserInterface::read("månad");
 
-            check_input(calendar.set_month(month));
+            UserInterface::check_input(calendar.set_month(month));
         };
         
     private:
