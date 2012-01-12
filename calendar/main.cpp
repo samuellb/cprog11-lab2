@@ -55,7 +55,22 @@ template<typename T> int work() {
     format_menu.add(format_ical);
     
     // Event menu
-    // TODO
+    CalendarMenuItem1<T, bool (lab2::Calendar<T>::*)(std::string), std::string> event_add_today(
+        "Lägg till händelse idag", calendar, &lab2::Calendar<T>::add_event, {"namn"});
+    event_menu.add(event_add_today);
+    
+    CalendarMenuItem3<T, bool (lab2::Calendar<T>::*)(std::string, int, int), std::string, int, int> event_add_other(
+        "Lägg till händelse detta år", calendar, &lab2::Calendar<T>::add_event, {"namn", "dag", "månad"});
+    event_menu.add(event_add_other);
+    
+    CalendarMenuItem1<T, bool (lab2::Calendar<T>::*)(std::string), std::string> event_remove_today(
+        "Ta bort händelse idag", calendar, &lab2::Calendar<T>::remove_event, {"namn"});
+    event_menu.add(event_remove_today);
+    
+    CalendarMenuItem3<T, bool (lab2::Calendar<T>::*)(std::string, int, int), std::string, int, int> event_remove_other(
+        "Ta bort händelse detta år", calendar, &lab2::Calendar<T>::remove_event, {"namn", "dag", "månad"});
+    event_menu.add(event_remove_other);
+
 
     CalendarUI<T> ui(calendar);
     UserInterface::set_ui(ui);
